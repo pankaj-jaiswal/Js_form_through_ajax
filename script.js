@@ -1,20 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
     var myForm = document.getElementById("myForm");
+    var resultDiv = document.getElementById("result");
 
     myForm.addEventListener('submit', function(e) {
-        var inputName = document.getElementById("name").value;
-        var inputEmail = document.getElementById("email").value;
+        e.preventDefault();
+
+        var inputName = document.getElementById("name");
+        var inputEmail = document.getElementById("email");
 
         document.getElementById('nameError').innerHTML = "";
         document.getElementById('emailError').innerHTML = "";
 
-        if (inputName.trim() === "") {
+        if (inputName.value.trim() === "") {
             document.getElementById('nameError').innerHTML = 'Please fill out name fields.';
-            e.preventDefault();
             return;
-        } else if (inputEmail.trim() === "") {
+        } else if (inputEmail.value.trim() === "") {
             document.getElementById('emailError').innerHTML = 'Please fill out email fields.';
-            e.preventDefault();
             return;
         }
 
@@ -28,12 +29,29 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+
+            // Clear form fields after successful submission
+            inputName.value = "";
+            inputEmail.value = "";
+
+            // Create an HTML table and append it to resultDiv
+            var table = '<table border="1"><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Date</th></tr></thead><tbody>';
+
+            data.forEach(function(user) {
+                table += '<tr>';
+                table += '<td>' + user.id + '</td>';
+                table += '<td>' + user.name + '</td>';
+                table += '<td>' + user.email + '</td>';
+                table += '<td>' + user.date + '</td>';
+                table += '</tr>';
+            });
+
+            table += '</tbody></table>';
+
+            resultDiv.innerHTML = table;
         })
         .catch(error => {
             console.error('Error:', error);
         });
-
-        // Prevent form submission (done after the fetch request)
-        e.preventDefault();
     });
 });
