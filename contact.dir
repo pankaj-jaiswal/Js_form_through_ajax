@@ -1,0 +1,4 @@
+[
+    {"name": "John Doe", "city": "New York", "address": "123 Main St", "contactno": "123-456-7890"},
+    {"name": "Alice Smith", "city": "Los Angeles", "address": "456 Elm St", "contactno": "987-654-3210"}
+]
